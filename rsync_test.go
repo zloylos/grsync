@@ -238,11 +238,11 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--dry-run")
 	})
 
-	t.Run("--while-file", func(t *testing.T) {
+	t.Run("--whole-file", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
-			WhileFile: true,
+			WholeFile: true,
 		})
-		assert.Contains(t, args, "--while-file")
+		assert.Contains(t, args, "--whole-file")
 	})
 
 	t.Run("--one-file-system", func(t *testing.T) {
