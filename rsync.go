@@ -87,7 +87,7 @@ type RsyncOptions struct {
 	// DryRun perform a trial run with no changes made
 	DryRun bool
 	// WholeFile copy files whole (w/o delta-xfer algorithm)
-	WhileFile bool
+	WholeFile bool
 	// OneFileSystem don't cross filesystem boundaries
 	OneFileSystem bool
 	// BlockSize block-size=SIZE force a fixed checksum block-size
@@ -348,8 +348,8 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--dry-run")
 	}
 
-	if options.WhileFile {
-		arguments = append(arguments, "--while-file")
+	if options.WholeFile {
+		arguments = append(arguments, "--whole-file")
 	}
 
 	if options.OneFileSystem {
