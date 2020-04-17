@@ -90,6 +90,8 @@ type RsyncOptions struct {
 	WholeFile bool
 	// OneFileSystem don't cross filesystem boundaries
 	OneFileSystem bool
+	// BwLimit=RATE(KBPS) limit socket I/O bandwidth,
+	BwLimit int
 	// BlockSize block-size=SIZE force a fixed checksum block-size
 	BlockSize int
 	// Rsh -rsh=COMMAND specify the remote shell to use
@@ -354,6 +356,10 @@ func getArguments(options RsyncOptions) []string {
 
 	if options.OneFileSystem {
 		arguments = append(arguments, "--one-file-system")
+	}
+
+	if options.BwLimit > 0 {
+		arguments = append(arguments, "--bwlimit", strconv.Itoa(options.BwLimit))
 	}
 
 	if options.BlockSize > 0 {
