@@ -96,8 +96,8 @@ type RsyncOptions struct {
 	BlockSize int
 	// Rsh -rsh=COMMAND specify the remote shell to use
 	Rsh string
-	// RsyncProgramm rsync-path=PROGRAM specify the rsync to run on remote machine
-	RsyncProgramm string
+	// RsyncPath rsync-path=PROGRAM specify the rsync to run on remote machine
+	RsyncPath string
 	// Existing skip creating new files on receiver
 	Existing bool
 	// IgnoreExisting skip updating files that exist on receiver
@@ -370,8 +370,8 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--rsh", options.Rsh)
 	}
 
-	if options.RsyncProgramm != "" {
-		arguments = append(arguments, "--rsync-programm", options.RsyncProgramm)
+	if options.RsyncPath != "" {
+		arguments = append(arguments, "--rsync-path", options.RsyncPath)
 	}
 
 	if options.Existing {
