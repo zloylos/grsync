@@ -1,6 +1,7 @@
 package grsync
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -170,6 +171,8 @@ type RsyncOptions struct {
 	Progress bool
 	// Info
 	Info string
+	// Exclude --exclude="", exclude remote paths.
+	Exclude []string
 
 	// ipv4
 	IPv4 bool
@@ -522,6 +525,12 @@ func getArguments(options RsyncOptions) []string {
 
 	if options.Info != "" {
 		arguments = append(arguments, "--info", options.Info)
+	}
+
+	if len(options.Exclude) > 0 {
+		for _, pattern := range options.Exclude {
+			arguments = append(arguments, fmt.Sprintf("--exclude=\"%s\"", pattern))
+		}
 	}
 
 	return arguments
