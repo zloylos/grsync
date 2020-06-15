@@ -529,7 +529,7 @@ func getArguments(options RsyncOptions) []string {
 
 	if len(options.Exclude) > 0 {
 		for _, pattern := range options.Exclude {
-			arguments = append(arguments, fmt.Sprintf("--exclude=\"%s\"", pattern))
+			arguments = append(arguments, fmt.Sprintf("--exclude=%s", pattern))
 		}
 	}
 

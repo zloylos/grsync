@@ -535,11 +535,11 @@ func TestParseArguments(t *testing.T) {
 
 	t.Run("--exclude", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
-			Exclude: []string{"foo", "bar", ".baz"},
+			Exclude: []string{"foo", "bar", "\"baz\""},
 		})
-		assert.Contains(t, args, "--exclude=\"foo\"")
-		assert.Contains(t, args, "--exclude=\"bar\"")
-		assert.Contains(t, args, "--exclude=\".baz\"")
+		assert.Contains(t, args, "--exclude=foo")
+		assert.Contains(t, args, "--exclude=bar")
+		assert.Contains(t, args, "--exclude=\"baz\"")
 	})
 
 	t.Run("--ipv4", func(t *testing.T) {
