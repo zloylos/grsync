@@ -178,6 +178,9 @@ type RsyncOptions struct {
 	IPv4 bool
 	// ipv6
 	IPv6 bool
+
+	//out-format
+	OutFormat bool
 }
 
 // StdoutPipe returns a pipe that will be connected to the command's
@@ -527,6 +530,10 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--info", options.Info)
 	}
 
+	if options.OutFormat {
+		arguments = append(arguments, "--out-format=\"%n\"")
+	}
+	
 	if len(options.Exclude) > 0 {
 		for _, pattern := range options.Exclude {
 			arguments = append(arguments, fmt.Sprintf("--exclude=%s", pattern))
@@ -545,6 +552,6 @@ func createDir(dir string) error {
 }
 
 func isExist(p string) bool {
-	stat, err := os.Stat(p)
-	return os.IsExist(err) && stat.IsDir()
+	_, err := os.Stat(p)
+	return err == nil || os.IsExist(err)
 }
