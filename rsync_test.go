@@ -542,6 +542,15 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--exclude=\"baz\"")
 	})
 
+	t.Run("--include", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			Include: []string{"foo", "bar", "\"baz\""},
+		})
+		assert.Contains(t, args, "--include=foo")
+		assert.Contains(t, args, "--include=bar")
+		assert.Contains(t, args, "--include=\"baz\"")
+	})
+
 	t.Run("--ipv4", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			IPv4: true,
