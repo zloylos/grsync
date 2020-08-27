@@ -551,6 +551,14 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--include=\"baz\"")
 	})
 
+	t.Run("--filter", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			Filter: "merge 'filter.txt'",
+		})
+		assert.Contains(t, args, "--filter")
+		assert.Contains(t, args, "merge 'filter.txt'")
+	})
+
 	t.Run("--ipv4", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			IPv4: true,
