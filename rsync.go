@@ -551,7 +551,7 @@ func getArguments(options RsyncOptions) []string {
 	}
 
 	if options.Filter != "" {
-		arguments = append(arguments, options.Filter)
+		arguments = append(arguments, fmt.Sprintf("--filter=\"%s\"", options.Filter))
 	}
 
 	return arguments
