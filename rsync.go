@@ -173,6 +173,10 @@ type RsyncOptions struct {
 	Info string
 	// Exclude --exclude="", exclude remote paths.
 	Exclude []string
+	// Include --include="", include remote paths.
+	Include []string
+	// Filter --filter="", include filter rule.
+	Filter string
 
 	// ipv4
 	IPv4 bool
@@ -533,11 +537,21 @@ func getArguments(options RsyncOptions) []string {
 	if options.OutFormat {
 		arguments = append(arguments, "--out-format=\"%n\"")
 	}
-	
+
 	if len(options.Exclude) > 0 {
 		for _, pattern := range options.Exclude {
 			arguments = append(arguments, fmt.Sprintf("--exclude=%s", pattern))
 		}
+	}
+
+	if len(options.Include) > 0 {
+		for _, pattern := range options.Include {
+			arguments = append(arguments, fmt.Sprintf("--include=%s", pattern))
+		}
+	}
+
+	if options.Filter != "" {
+		arguments = append(arguments, fmt.Sprintf("--filter=%s", options.Filter))
 	}
 
 	return arguments
