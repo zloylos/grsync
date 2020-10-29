@@ -180,7 +180,6 @@ type RsyncOptions struct {
 	// Chown --chown="", chown on receipt.
 	Chown string
 
-
 	// ipv4
 	IPv4 bool
 	// ipv6
