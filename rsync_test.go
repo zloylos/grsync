@@ -563,8 +563,7 @@ func TestParseArguments(t *testing.T) {
 			Chown: "nobody:nobody",
 		})
 		assert.Contains(t, args, "--chown", "nobody:nobody")
-		})
-	}
+	})
 
 	t.Run("--ipv4", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
