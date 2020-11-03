@@ -553,16 +553,16 @@ func TestParseArguments(t *testing.T) {
 
 	t.Run("--filter", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
-			Filter: "merge filter.txt",
+			Filter: "merge_filter.txt",
 		})
-		assert.Contains(t, args, "--filter=merge filter.txt")
+		assert.Contains(t, args, "--filter=merge_filter.txt")
 	})
 
 	t.Run("--chown", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			Chown: "nobody:nobody",
 		})
-		assert.Contains(t, args, "--chown", "nobody:nobody")
+		assert.Contains(t, args, "--chown=nobody:nobody")
 	})
 
 	t.Run("--ipv4", func(t *testing.T) {
