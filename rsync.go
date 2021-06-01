@@ -526,7 +526,7 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--progress")
 	}
 	
-	if options.PasswordFile {
+	if options.PasswordFile != "" {
 		arguments = append(arguments, "--password-file", options.PasswordFile)
 	}
 
