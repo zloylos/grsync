@@ -91,12 +91,14 @@ type RsyncOptions struct {
 	WholeFile bool
 	// OneFileSystem don't cross filesystem boundaries
 	OneFileSystem bool
+	// BwLimit bwlimit=RATE(KBPS) limit socket I/O bandwidth
+	BwLimit int
 	// BlockSize block-size=SIZE force a fixed checksum block-size
 	BlockSize int
 	// Rsh -rsh=COMMAND specify the remote shell to use
 	Rsh string
-	// RsyncProgramm rsync-path=PROGRAM specify the rsync to run on remote machine
-	RsyncProgramm string
+	// RsyncPath rsync-path=PROGRAM specify the rsync to run on remote machine
+	RsyncPath string
 	// Existing skip creating new files on receiver
 	Existing bool
 	// IgnoreExisting skip updating files that exist on receiver
@@ -207,7 +209,7 @@ func (r Rsync) StderrPipe() (io.ReadCloser, error) {
 
 // Run start rsync task
 func (r Rsync) Run() error {
-	if !isExist(r.Destination) {
+	if !isExist(r.Destination) && !strings.Contains(r.Destination,":") {
 		if err := createDir(r.Destination); err != nil {
 			return err
 		}
@@ -372,6 +374,10 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--one-file-system")
 	}
 
+	if options.BwLimit > 0 {
+		arguments = append(arguments, "--bwlimit", strconv.Itoa(options.BwLimit))
+	}
+
 	if options.BlockSize > 0 {
 		arguments = append(arguments, "--block-size", strconv.Itoa(options.BlockSize))
 	}
@@ -380,8 +386,8 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--rsh", options.Rsh)
 	}
 
-	if options.RsyncProgramm != "" {
-		arguments = append(arguments, "--rsync-programm", options.RsyncProgramm)
+	if options.RsyncPath != "" {
+		arguments = append(arguments, "--rsync-path", options.RsyncPath)
 	}
 
 	if options.Existing {
