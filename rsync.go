@@ -172,7 +172,7 @@ type RsyncOptions struct {
 	// Read daemon-access password from FILE
 	PasswordFile string
 	// limit socket I/O bandwidth
-	BandwidthLimit int      
+	BandwidthLimit int
 	// Info
 	Info string
 	// Exclude --exclude="", exclude remote paths.
@@ -527,11 +527,11 @@ func getArguments(options RsyncOptions) []string {
 	if options.Progress {
 		arguments = append(arguments, "--progress")
 	}
-	
+
 	if options.PasswordFile != "" {
 		arguments = append(arguments, "--password-file", options.PasswordFile)
 	}
-	
+
 	if options.BandwidthLimit > 0 {
 		arguments = append(arguments, "--bwlimit", strconv.Itoa(options.BandwidthLimit))
 	}
@@ -552,15 +552,15 @@ func getArguments(options RsyncOptions) []string {
 		arguments = append(arguments, "--out-format=\"%n\"")
 	}
 
-	if len(options.Exclude) > 0 {
-		for _, pattern := range options.Exclude {
-			arguments = append(arguments, fmt.Sprintf("--exclude=%s", pattern))
-		}
-	}
-
 	if len(options.Include) > 0 {
 		for _, pattern := range options.Include {
 			arguments = append(arguments, fmt.Sprintf("--include=%s", pattern))
+		}
+	}
+
+	if len(options.Exclude) > 0 {
+		for _, pattern := range options.Exclude {
+			arguments = append(arguments, fmt.Sprintf("--exclude=%s", pattern))
 		}
 	}
 
