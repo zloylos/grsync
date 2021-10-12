@@ -36,7 +36,7 @@ func main() {
                 state.Total,
                 state.Speed,
             )
-            time.Sleep(time.Second)
+            <- time.After(time.Second)
         }
     }()
 
