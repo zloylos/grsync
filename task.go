@@ -66,9 +66,9 @@ func (t *Task) Run() error {
 // NewTask returns new rsync task
 func NewTask(source, destination string, rsyncOptions RsyncOptions) *Task {
 	// Force set required options
-	rsyncOptions.HumanReadable = true
-	rsyncOptions.Partial = true
-	rsyncOptions.Progress = true
+	// rsyncOptions.HumanReadable = true // pb clone change
+	// rsyncOptions.Partial = true // pb clone change
+	// rsyncOptions.Progress = true // pb clone change
 	rsyncOptions.Archive = true
 
 	return &Task{

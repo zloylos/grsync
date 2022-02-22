@@ -184,6 +184,11 @@ type RsyncOptions struct {
 	// Chown --chown="", chown on receipt.
 	Chown string
 
+	// create patch with: --only-write-batch=""
+	CreatePatch string
+	// apply patch with: --read-batch=""
+	ApplyPatch string
+
 	// ipv4
 	IPv4 bool
 	// ipv6
@@ -207,11 +212,11 @@ func (r Rsync) StderrPipe() (io.ReadCloser, error) {
 
 // Run start rsync task
 func (r Rsync) Run() error {
-	if !isExist(r.Destination) {
-		if err := createDir(r.Destination); err != nil {
-			return err
-		}
-	}
+	// if !isExist(r.Destination) {
+	// 	if err := createDir(r.Destination); err != nil {
+	// 		return err
+	// 	}
+	// } // pb clone change - omit creating firectory for create/apply patch - TMP FIX
 
 	if err := r.cmd.Start(); err != nil {
 		return err
@@ -570,6 +575,14 @@ func getArguments(options RsyncOptions) []string {
 
 	if options.Chown != "" {
 		arguments = append(arguments, fmt.Sprintf("--chown=%s", options.Chown))
+	}
+
+	if options.CreatePatch != "" {
+		arguments = append(arguments, fmt.Sprintf("--only-write-batch=%s", options.CreatePatch))
+	}
+
+	if options.ApplyPatch != "" {
+		arguments = append(arguments, fmt.Sprintf("--read-batch=%s", options.ApplyPatch))
 	}
 
 	return arguments
