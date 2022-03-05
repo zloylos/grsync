@@ -1,0 +1,19 @@
+name: All builds
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go_version: ["1.17.8", "1.16.5", "1.15.13"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go_version }}
+      - run: go get -t -v ./...
+      - run: go test -v -race ./...
+      - run: sh coverage.sh
+      - run: bash <(curl -s https://codecov.io/bash)
