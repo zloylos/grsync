@@ -19,6 +19,10 @@ type Rsync struct {
 
 // RsyncOptions for rsync
 type RsyncOptions struct {
+	// RsyncBinaryPath is a path to the rsync binary; by default just `rsync`
+	RsyncBinaryPath string
+	// RsyncPath specify the rsync to run on remote machine, e.g `--rsync-path="cd /a/b && rsync"`
+	RsyncPath string
 	// Verbose increase verbosity
 	Verbose bool
 	// Quet suppress non-error messages
@@ -95,8 +99,6 @@ type RsyncOptions struct {
 	BlockSize int
 	// Rsh -rsh=COMMAND specify the remote shell to use
 	Rsh string
-	// RsyncProgramm rsync-path=PROGRAM specify the rsync to run on remote machine
-	RsyncProgramm string
 	// Existing skip creating new files on receiver
 	Existing bool
 	// IgnoreExisting skip updating files that exist on receiver
@@ -223,15 +225,26 @@ func (r Rsync) Run() error {
 // NewRsync returns task with described options
 func NewRsync(source, destination string, options RsyncOptions) *Rsync {
 	arguments := append(getArguments(options), source, destination)
+
+	binaryPath := "rsync"
+	if options.RsyncBinaryPath != "" {
+		binaryPath = options.RsyncBinaryPath
+	}
+
 	return &Rsync{
 		Source:      source,
 		Destination: destination,
-		cmd:         exec.Command("rsync", arguments...),
+		cmd:         exec.Command(binaryPath, arguments...),
 	}
 }
 
 func getArguments(options RsyncOptions) []string {
 	arguments := []string{}
+
+	if options.RsyncPath != "" {
+		arguments = append(arguments, "--rsync-path", options.RsyncPath)
+	}
+
 	if options.Verbose {
 		arguments = append(arguments, "--verbose")
 	}
@@ -378,10 +391,6 @@ func getArguments(options RsyncOptions) []string {
 
 	if options.Rsh != "" {
 		arguments = append(arguments, "--rsh", options.Rsh)
-	}
-
-	if options.RsyncProgramm != "" {
-		arguments = append(arguments, "--rsync-programm", options.RsyncProgramm)
 	}
 
 	if options.Existing {

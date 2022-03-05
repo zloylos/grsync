@@ -266,11 +266,11 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--rsh", "test")
 	})
 
-	t.Run("--rsync-programm", func(t *testing.T) {
+	t.Run("--rsync-path", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
-			RsyncProgramm: "test",
+			RsyncPath: "test",
 		})
-		assert.Contains(t, args, "--rsync-programm", "test")
+		assert.Contains(t, args, "--rsync-path", "test")
 	})
 
 	t.Run("--existing", func(t *testing.T) {
@@ -294,14 +294,14 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--remove-source-files")
 	})
 
-	t.Run("", func(t *testing.T) {
+	t.Run("--delete", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			Delete: true,
 		})
 		assert.Contains(t, args, "--delete")
 	})
 
-	t.Run("--delete", func(t *testing.T) {
+	t.Run("--delete-before", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			DeleteBefore: true,
 		})
