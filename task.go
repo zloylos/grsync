@@ -6,6 +6,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 // Task is high-level API under rsync
@@ -57,10 +58,15 @@ func (t *Task) Run() error {
 	}
 	defer stdout.Close()
 
-	go processStdout(t, stdout)
-	go processStderr(t, stderr)
+	var wg sync.WaitGroup
+	go processStdout(&wg, t, stdout)
+	go processStderr(&wg, t, stderr)
+	wg.Add(2)
 
-	return t.rsync.Run()
+	err = t.rsync.Run()
+	wg.Wait()
+
+	return err
 }
 
 // NewTask returns new rsync task
@@ -78,9 +84,11 @@ func NewTask(source, destination string, rsyncOptions RsyncOptions) *Task {
 	}
 }
 
-func processStdout(task *Task, stdout io.Reader) {
+func processStdout(wg *sync.WaitGroup, task *Task, stdout io.Reader) {
 	const maxPercents = float64(100)
 	const minDivider = 1
+
+	defer wg.Done()
 
 	progressMatcher := newMatcher(`\(.+-chk=(\d+.\d+)`)
 	speedMatcher := newMatcher(`(\d+\.\d+.{2}\/s)`)
@@ -105,7 +113,9 @@ func processStdout(task *Task, stdout io.Reader) {
 	}
 }
 
-func processStderr(task *Task, stderr io.Reader) {
+func processStderr(wg *sync.WaitGroup, task *Task, stderr io.Reader) {
+	defer wg.Done()
+
 	scanner := bufio.NewScanner(stderr)
 	for scanner.Scan() {
 		task.log.Stderr += scanner.Text() + "\n"
