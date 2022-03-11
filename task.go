@@ -50,23 +50,29 @@ func (t *Task) Run() error {
 	if err != nil {
 		return err
 	}
-	defer stderr.Close()
 
 	stdout, err := t.rsync.StdoutPipe()
 	if err != nil {
+		stderr.Close()
 		return err
 	}
-	defer stdout.Close()
 
 	var wg sync.WaitGroup
 	go processStdout(&wg, t, stdout)
 	go processStderr(&wg, t, stderr)
 	wg.Add(2)
 
-	err = t.rsync.Run()
+	if err = t.rsync.Start(); err != nil {
+		// Close pipes to unblock goroutines
+		stdout.Close()
+		stderr.Close()
+		wg.Wait()
+		return err
+	}
+
 	wg.Wait()
 
-	return err
+	return t.rsync.Wait()
 }
 
 // NewTask returns new rsync task
