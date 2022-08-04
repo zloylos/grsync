@@ -224,6 +224,13 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--times")
 	})
 
+	t.Run("--no-times", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			NoTimes: true,
+		})
+		assert.Contains(t, args, "--no-times")
+	})
+
 	t.Run("--omit-dir-times", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			OmitDirTimes: true,

@@ -87,6 +87,8 @@ type RsyncOptions struct {
 	Specials bool
 	// Times preserve modification times
 	Times bool
+	// NoTimes preserve modification times
+	NoTimes bool
 	// omit directories from --times
 	OmitDirTimes bool
 	// Super receiver attempts super-user activities
@@ -373,6 +375,10 @@ func getArguments(options RsyncOptions) []string {
 
 	if options.Times {
 		arguments = append(arguments, "--times")
+	}
+
+	if options.NoTimes {
+		arguments = append(arguments, "--no-times")
 	}
 
 	if options.OmitDirTimes {
