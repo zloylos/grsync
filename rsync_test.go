@@ -147,6 +147,13 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--perms")
 	})
 
+	t.Run("--no-perms", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			NoPerms: true,
+		})
+		assert.Contains(t, args, "--no-perms")
+	})
+
 	t.Run("--executability", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			Executability: true,
@@ -175,11 +182,25 @@ func TestParseArguments(t *testing.T) {
 		assert.Contains(t, args, "--owner")
 	})
 
+	t.Run("--no-owner", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			NoOwner: true,
+		})
+		assert.Contains(t, args, "--no-owner")
+	})
+
 	t.Run("--group", func(t *testing.T) {
 		args := getArguments(RsyncOptions{
 			Group: true,
 		})
 		assert.Contains(t, args, "--group")
+	})
+
+	t.Run("--no-group", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			NoGroup: true,
+		})
+		assert.Contains(t, args, "--no-group")
 	})
 
 	t.Run("--devices", func(t *testing.T) {
@@ -201,6 +222,13 @@ func TestParseArguments(t *testing.T) {
 			Times: true,
 		})
 		assert.Contains(t, args, "--times")
+	})
+
+	t.Run("--no-times", func(t *testing.T) {
+		args := getArguments(RsyncOptions{
+			NoTimes: true,
+		})
+		assert.Contains(t, args, "--no-times")
 	})
 
 	t.Run("--omit-dir-times", func(t *testing.T) {
